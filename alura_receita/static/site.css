@@ -429,7 +429,6 @@ textarea:focus {
       .header-area .top-header-area .breaking-news .ticker {
         width: 100%;
         text-align: left;
-        background-color: red;
         position: relative;
         overflow: hidden; }
         .header-area .top-header-area .breaking-news .ticker ul {
