@@ -16,11 +16,7 @@
 
 ---
 
-<p align="center"> Few lines describing your project.
-    <br> 
-</p>
-
-## 📝 Table of Contents
+## 📝 Summary
 
 - [About](#about)
 - [Getting Started](#getting_started)
