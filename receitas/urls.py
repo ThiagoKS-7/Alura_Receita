@@ -7,4 +7,5 @@ from . import views  # manipula qual url exibir
 urlpatterns = [
     path("", views.index, name="index"),
     path("<int:receita_id>", views.receitas, name="receitas"),
+    path("busca", views.buscar, name="buscar"),
 ]

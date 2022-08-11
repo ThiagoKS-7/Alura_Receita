@@ -34,8 +34,11 @@
                         <div class="col-12 col-lg-5">
                             <select name="select1" id="select1">
                                 <option value="1">Comida típica brasileira</option>
-                                <option value="1">Massas</option>
-                                <option value="1">Veganas</option>
+                                <option value="2">Bolos</option>
+                                <option value="3">Sobremesas</option>
+                                <option value="4">Sopas</option>
+                                <option value="5">Massas</option>
+                                <option value="6">Veganas</option>
                             </select>
                         </div>
                         <div class="col-12 col-lg-2 text-right">
@@ -46,12 +49,16 @@
             </div>
         </div>
 
-        <!-- Receipe Slider -->
+        <!-- Recipe Slider -->
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="receipe-slider owl-carousel">
-                        <img src="{% static 'img/bg-img/tomate_banner.jpg' %}">
+                        {% if receita.foto_receita == null %}
+                            <img src="{% static 'img/bg-img/tomate_banner.jpg' %}">
+                        {% else %}
+                            <img src="{{receita.banner_receita.url}}" alt="">
+                        {% endif %}
                     </div>
                 </div>
             </div>
