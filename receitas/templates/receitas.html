@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <form action="/admin" method="post">{% csrf_token %}
+                    <form action="{% url 'buscar' %}">
                         <input type="search" name="search" placeholder="O que está procurando...">
                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </form>
@@ -23,22 +23,22 @@
             </div>
         </div>
     </div>
-
+    {%include 'partials/busca.html'%}
     {%include 'partials/menu.html'%}
 
         <!-- Receipe Post Search -->
         <div class="receipe-post-search mb-80">
             <div class="container">
-                <form action="" method="post">{% csrf_token %}
+                <form action="{% url 'buscar' %}">
                     <div class="row">
                         <div class="col-12 col-lg-5">
-                            <select name="select1" id="select1">
-                                <option value="1">Comida típica brasileira</option>
-                                <option value="2">Bolos</option>
-                                <option value="3">Sobremesas</option>
-                                <option value="4">Sopas</option>
-                                <option value="5">Massas</option>
-                                <option value="6">Veganas</option>
+                            <select name="buscar" id="select1">
+                                <option value="Comida típica brasileira">Comida típica brasileira</option>
+                                <option value="Bolo">Bolos</option>
+                                <option value="Sobremesa">Sobremesas</option>
+                                <option value="Sopa">Sopas</option>
+                                <option value="Massa">Massas</option>
+                                <option value="Veg">Veganas</option>
                             </select>
                         </div>
                         <div class="col-12 col-lg-2 text-right">
