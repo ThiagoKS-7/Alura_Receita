@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User  # modelo de usuarios
+from django.contrib import auth
 
 
 def pwdsAreDiferent(data):
@@ -49,15 +50,31 @@ def cadastro(request):
 def login(request):
     if request.method == "POST":
         # o que vem da reuquest é os names dos inputs
-        nome = request.POST["nome"]
-        print(f"{nome} logado com sucesso!")
-        return redirect("index")
+        data = request.POST
+        user = auth.authenticate(
+            request, username=data["email"], password=data["password"]
+        )
+        if not data["email"].strip() or not data["password"].strip():
+            print("Preencha todos os campos! Nada pode ficar em branco!")
+            return redirect("login")
+        if user is not None:
+            auth.login(request, user)
+            print("Logado com sucesso!")
+            return redirect("dashboard")
+        else:
+            print("Email ou senha inválidos! Tente de novo")
+            return redirect("login")
+
     return render(request, "usuarios/login.html")
 
 
 def dashboard(request):
-    pass
+    if request.user.is_authenticated():
+        return render(request, "usuarios/dashboard.html")
+    else:
+        return redirect("index")
 
 
 def logout(request):
-    pass
+    auth.logout(request)
+    return redirect("index")
