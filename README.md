@@ -55,7 +55,7 @@ python manage.py runserver
 
 - [PostgreSQL](https://www.postgresql.org) - Database
 - [Django](https://www.djangoproject.com) - Web Framework
--[Bootstrap](https://getbootstrap.com) - Layout
+- [Bootstrap](https://getbootstrap.com) - Layout
 
 ## ✍️ Authors <a name = "authors"></a>
 
