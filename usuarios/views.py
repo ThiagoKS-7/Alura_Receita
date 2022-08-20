@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User  # modelo de usuarios
 from django.contrib import auth
+
+from receitas.models import Receita
 
 
 def pwdsAreDiferent(data):
@@ -69,8 +71,15 @@ def login(request):
 
 
 def dashboard(request):
-    if request.user.is_authenticated():
-        return render(request, "usuarios/dashboard.html")
+    if request.user.is_authenticated:
+        # Trazer todas as receitas feitas pelo usuário logado
+        receitas_query = Receita.objects.order_by("data_receita").filter(
+            pessoa=request.user.id
+        )
+        data = {
+            "receitas": receitas_query,
+        }
+        return render(request, "usuarios/dashboard.html", data)
     else:
         return redirect("index")
 
@@ -78,3 +87,26 @@ def dashboard(request):
 def logout(request):
     auth.logout(request)
     return redirect("index")
+
+
+def cria_receita(request):
+    if request.method == "POST":
+        data = request.POST
+        files = request.FILES
+        user = get_object_or_404(User, pk=request.user.id)
+        receita = Receita.objects.create(
+            pessoa=user,  # pessoa que criou a receita
+            nome_receita=data["nome_receita"],
+            ingredientes=data["ingredientes"],
+            modo_preparo=data["modo_preparo"],
+            rendimento=data["rendimento"],
+            tempo_preparo=data["tempo_preparo"],
+            categoria=data["categoria"],
+            foto_receita=files["foto_receita"],
+            banner_receita=files["banner_receita"],
+        )
+        receita.save()
+        print(f"Receita {data['nome_receita']} criada com sucesso!")
+        return redirect("dashboard")
+    else:
+        return render(request, "usuarios/cria_receita.html")
