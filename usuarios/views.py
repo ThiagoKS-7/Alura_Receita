@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User  # modelo de usuarios
-from django.contrib import auth
+from django.contrib import auth, messages
 
 from receitas.models import Receita
 
@@ -19,7 +19,6 @@ def createUser(data):
         username=data["nome"], email=data["email"], password=data["password"]
     )
     user.save()
-    print(f"Usuário {data['nome']} cadastrado com sucesso!")
 
 
 def isEmpty(data):
@@ -35,16 +34,24 @@ def cadastro(request):
         data = request.POST
         # checar se o campo tá em branco => if not nome.strip(): ~ aviso;
         if isEmpty(data):
-            print("Preencha todos os campos! Nada pode ficar em branco!")
+            messages.error(
+                request, "Preencha todos os campos! Nada pode ficar em branco!"
+            )
             return redirect("cadastro")
         elif pwdsAreDiferent(data):
-            print("Senhas não conferem! Corrija os campos e tente novamente.")
+            messages.error(
+                request, "Senhas não conferem! Corrija os campos e tente novamente."
+            )
             return redirect("cadastro")
         elif userEmailExists(data):
-            print("Usuário já cadastrado! Faça login ao invés de cadastrar novamente.")
+            messages.error(
+                request,
+                "Usuário já cadastrado! Faça login ao invés de cadastrar novamente.",
+            )
             return redirect("login")
         else:
             createUser(data)
+            messages.success(request, "Usuário cadastrado com sucesso!")
             return redirect("login")
     return render(request, "usuarios/cadastro.html")
 
@@ -57,11 +64,13 @@ def login(request):
             request, username=data["email"], password=data["password"]
         )
         if not data["email"].strip() or not data["password"].strip():
-            print("Preencha todos os campos! Nada pode ficar em branco!")
+            messages.error(
+                request, "Preencha todos os campos! Nada pode ficar em branco!"
+            )
             return redirect("login")
         if user is not None:
+            messages.success(request, "Usuário logado com sucesso!")
             auth.login(request, user)
-            print("Logado com sucesso!")
             return redirect("dashboard")
         else:
             print("Email ou senha inválidos! Tente de novo")
@@ -106,7 +115,7 @@ def cria_receita(request):
             banner_receita=files["banner_receita"],
         )
         receita.save()
-        print(f"Receita {data['nome_receita']} criada com sucesso!")
+        messages.success(request, f"Receita {data['nome_receita']} criada com sucesso!")
         return redirect("dashboard")
     else:
         return render(request, "usuarios/cria_receita.html")
